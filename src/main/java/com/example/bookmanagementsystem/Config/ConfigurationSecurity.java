@@ -47,7 +47,12 @@ public class ConfigurationSecurity {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/book/get-all-books", "/api/auth/signup", "/api/auth/login")
+                        .requestMatchers("/api/book/get-all-books", "/api/auth/signup", "/api/auth/login",
+                                "/v3/api-docs/**",
+                                "/v2/api-docs/**",
+                                "/v1/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
                         .permitAll()
                         .requestMatchers("/api/book/add-book", "/api/book/delete-book/**", "/api/book/update-book/**")
                         .hasAnyAuthority("ADMIN", "AUTHOR")

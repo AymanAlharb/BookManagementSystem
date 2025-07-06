@@ -5,7 +5,6 @@ import com.example.bookmanagementsystem.DtoIn.LoginDto;
 import com.example.bookmanagementsystem.DtoIn.UserDtoIn;
 import com.example.bookmanagementsystem.Model.Role;
 import com.example.bookmanagementsystem.Model.User;
-import com.example.bookmanagementsystem.Repository.RoleRepository;
 import com.example.bookmanagementsystem.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -35,11 +34,12 @@ public class UserService {
         }
 
         // Check if the username unique
-        if(userRepository.findUserByEmail(userDtoIn.getEmail()) != null){
+        if(userRepository.findUserByUsername(userDtoIn.getUsername()) != null){
             logger.warn("User with the email '{}' tried to sign up with a used username: '{}'",
                     userDtoIn.getEmail(), userDtoIn.getUsername());
             throw new ApiException("The username is used");
         }
+
         User user = new User(null, userDtoIn.getUsername(), userDtoIn.getEmail(),
                 new BCryptPasswordEncoder().encode(userDtoIn.getPassword()), null, null);
         Role role = new Role(null, userDtoIn.getRole(), null);

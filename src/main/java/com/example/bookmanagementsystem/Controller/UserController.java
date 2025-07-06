@@ -3,8 +3,8 @@ package com.example.bookmanagementsystem.Controller;
 import com.example.bookmanagementsystem.Api.ApiResponse;
 import com.example.bookmanagementsystem.DtoIn.LoginDto;
 import com.example.bookmanagementsystem.DtoIn.UserDtoIn;
-import com.example.bookmanagementsystem.Model.User;
 import com.example.bookmanagementsystem.Service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +26,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User signed up successfully."));
     }
 
+    @Operation(
+            description = "Returns a JWT token."
+    )
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody LoginDto loginInfo){
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(userService.verify(loginInfo)));
