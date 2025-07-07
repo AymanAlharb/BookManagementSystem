@@ -5,17 +5,21 @@ import com.example.bookmanagementsystem.DtoIn.BookDtoIn;
 import com.example.bookmanagementsystem.Model.Book;
 import com.example.bookmanagementsystem.Model.User;
 import com.example.bookmanagementsystem.Service.BookService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/book")
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
@@ -31,6 +35,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Book added successfully."));
     }
 
+    @Hidden
     @PutMapping("/update-book/{bookId}")
     public ResponseEntity<ApiResponse> updateBook(@AuthenticationPrincipal User user, @PathVariable Long bookId,
                                                   @RequestBody @Valid BookDtoIn bookDtoIn) {
@@ -38,7 +43,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Book updated successfully."));
     }
 
-    @PutMapping("/delete-book/{bookId}")
+    @DeleteMapping("/delete-book/{bookId}")
     public ResponseEntity<ApiResponse> deleteBook(@AuthenticationPrincipal User user, @PathVariable Long bookId) {
         bookService.deleteBook(user, bookId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Book deleted successfully."));
