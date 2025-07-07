@@ -1,0 +1,32 @@
+[33mcommit e048633c8179e94791c3409fb1e7da293ef74e1a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev2[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 6b6b195 47e0591
+Author: aymanalharb <ayman.f.alharbi@gmail.com>
+Date:   Mon Jul 7 11:49:44 2025 +0300
+
+    Merge remote-tracking branch 'origin/master'
+    
+    # Conflicts:
+    #       pom.xml
+    #       src/main/java/com/example/bookmanagementsystem/Config/ConfigurationSecurity.java
+    #       src/main/java/com/example/bookmanagementsystem/Controller/UserController.java
+    #       src/main/java/com/example/bookmanagementsystem/Service/UserService.java
+
+[33mcommit 6b6b195cc5fd8fb9a5ad87cf3e084d7568ae88e2[m
+Author: aymanalharb <ayman.f.alharbi@gmail.com>
+Date:   Sun Jul 6 16:38:14 2025 +0300
+
+    Email Notifications using SendGrid
+
+[33mcommit 47e0591963fd54047841fbdf09b46301c2457f48[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/Dev[m[33m)[m
+Author: aymanalharb <ayman.f.alharbi@gmail.com>
+Date:   Sun Jul 6 16:38:14 2025 +0300
+
+    Unit Testing
+    Jacoco
+    OpenApi Documentation
+
+[33mcommit de0a771afc211474a491a854446b968b1d23d0de[m
+Author: aymanalharb <ayman.f.alharbi@gmail.com>
+Date:   Thu Jul 3 13:50:50 2025 +0300
+
+    First Commit
