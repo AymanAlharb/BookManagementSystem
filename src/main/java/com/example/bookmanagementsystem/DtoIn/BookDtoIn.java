@@ -3,8 +3,10 @@ package com.example.bookmanagementsystem.DtoIn;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 @AllArgsConstructor
 public class BookDtoIn {

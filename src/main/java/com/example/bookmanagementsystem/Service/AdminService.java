@@ -24,7 +24,7 @@ public class AdminService {
         admin.setRole(role);
         role.setUser(admin);
         userRepository.save(admin);
-        logger.info("Admin add at start up successfully.");
+        logger.info("Admin added at start up successfully.");
 
     }
 }
