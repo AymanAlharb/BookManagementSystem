@@ -29,22 +29,27 @@ public class BookController {
     }
 
     @PostMapping("/add-book")
-    public ResponseEntity<ApiResponse> addBook(@AuthenticationPrincipal User user, @RequestBody @Valid CreatingBookRequest creatingBookRequest) {
-        bookService.addBook(user, creatingBookRequest);
+    public ResponseEntity<ApiResponse> addBook(@RequestBody @Valid CreatingBookRequest creatingBookRequest) {
+        bookService.addBook(creatingBookRequest);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Book added successfully."));
     }
 
     @Hidden
     @PutMapping("/update-book/{bookId}")
-    public ResponseEntity<ApiResponse> updateBook(@AuthenticationPrincipal User user, @PathVariable Long bookId,
+    public ResponseEntity<ApiResponse> updateBook(@PathVariable Long bookId,
                                                   @RequestBody @Valid CreatingBookRequest creatingBookRequest) {
-        bookService.updateBook(user, bookId, creatingBookRequest);
+        bookService.updateBook(bookId, creatingBookRequest);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Book updated successfully."));
     }
 
     @DeleteMapping("/delete-book/{bookId}")
-    public ResponseEntity<ApiResponse> deleteBook(@AuthenticationPrincipal User user, @PathVariable Long bookId) {
-        bookService.deleteBook(user, bookId);
+    public ResponseEntity<ApiResponse> deleteBook(@PathVariable Long bookId) {
+        bookService.deleteBook(bookId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Book deleted successfully."));
+    }
+
+    @GetMapping("/get-/{authorName}/-books")
+    public ResponseEntity<List<Book>> getBooksByAuthorName(@PathVariable String authorName){
+        return ResponseEntity.status(HttpStatus.OK).body(bookService.getBooksByAuthor(authorName));
     }
 }

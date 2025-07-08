@@ -1,5 +1,6 @@
 package com.example.bookmanagementsystem.controller;
 
+import com.example.bookmanagementsystem.model.RoleEnum;
 import com.example.bookmanagementsystem.model.dto.CreatingBookRequest;
 import com.example.bookmanagementsystem.model.Book;
 import com.example.bookmanagementsystem.model.Role;
@@ -55,7 +56,7 @@ public class BookControllerTest {
 
     @BeforeEach
     void init(){
-        Role role = Role.builder().role("USER").build();
+        Role role = Role.builder().role(RoleEnum.USER).build();
         user = User.builder()
                 .username("ayman")
                 .email("ayman@gmail.com")
@@ -104,7 +105,7 @@ public class BookControllerTest {
 
     @Test
     public void BookController_AddBook_ReturnSuccess() throws Exception {
-        doNothing().when(bookService).addBook(any(User.class), any(CreatingBookRequest.class));
+        doNothing().when(bookService).addBook(any(CreatingBookRequest.class));
 
         ResultActions response = mockMvc.perform(post("/api/book/add-book")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -116,7 +117,7 @@ public class BookControllerTest {
 
     @Test
     public void BookController_UpdateBook_ReturnSuccess() throws Exception {
-        doNothing().when(bookService).updateBook(any(User.class), any(), any(CreatingBookRequest.class));
+        doNothing().when(bookService).updateBook(any(), any(CreatingBookRequest.class));
 
         ResultActions response = mockMvc.perform(put("/api/book/update-book/{bookId}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -128,7 +129,7 @@ public class BookControllerTest {
 
     @Test
     public void BookController_DeleteBook_ReturnSuccess() throws Exception {
-        doNothing().when(bookService).deleteBook(any(User.class), any());
+        doNothing().when(bookService).deleteBook(any());
 
         ResultActions response = mockMvc.perform(delete("/api/book/delete-book/{bookId}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)

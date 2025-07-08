@@ -1,4 +1,4 @@
-package com.example.bookmanagementsystem.Config;
+package com.example.bookmanagementsystem.config;
 
 import com.example.bookmanagementsystem.filter.JwtFilter;
 import com.example.bookmanagementsystem.service.MyUserDetailsService;
@@ -47,24 +47,23 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/book/get-all-books", "/api/auth/signup", "/api/auth/login",
-                                "/v3/api-docs/**",
-                                "/v2/api-docs/**",
-                                "/v1/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html")
+                        .requestMatchers("/api/book/get-all-books",
+                                "/api/auth/signup",
+                                "/api/auth/login",
+                                "/api/book/get-/{authorName}/-books",
+                                "/v3/api-docs/**", "/v2/api-docs/**", "/v1/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                         .permitAll()
                         .requestMatchers("/api/book/add-book", "/api/book/delete-book/**", "/api/book/update-book/**")
                         .hasAnyAuthority("ADMIN", "AUTHOR")
+                        .requestMatchers("/api/auth/get-all-users")
+                        .hasAuthority("ADMIN")
                         .anyRequest()
                         .authenticated()
                 )
-                .httpBasic(withDefaults())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
 
 
     }

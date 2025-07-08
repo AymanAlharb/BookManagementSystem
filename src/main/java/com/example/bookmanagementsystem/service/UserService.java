@@ -2,6 +2,7 @@ package com.example.bookmanagementsystem.service;
 
 import com.example.bookmanagementsystem.exception.ApiException;
 import com.example.bookmanagementsystem.model.RoleEnum;
+import com.example.bookmanagementsystem.model.dto.UserResponse;
 import com.example.bookmanagementsystem.model.dto.LoginRequest;
 import com.example.bookmanagementsystem.model.dto.CreatingUserRequest;
 import com.example.bookmanagementsystem.model.Role;
@@ -10,13 +11,19 @@ import com.example.bookmanagementsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +33,7 @@ public class UserService {
     private final JWTService jwtService;
     private final EmailService emailService;
     private static final Logger logger = LogManager.getLogger(UserService.class);
+
 
 
     public void signup(CreatingUserRequest creatingUserRequest) throws IOException {
@@ -52,7 +60,7 @@ public class UserService {
         user.setRole(role);
         role.setUser(user);
         userRepository.save(user);
-        emailService.sendEmail(user.getEmail(), user.getUsername());
+        //emailService.sendEmail(user.getEmail(), user.getUsername());
         logger.info("New user with the username '{}' and the role '{}' signed up successfully.",
                 user.getUsername(), user.getRole().getRole());
 
@@ -67,19 +75,28 @@ public class UserService {
             throw new ApiException("Password or username incorrect.");
         }
 
-        return jwtService.generateToken(loginInfo.getUsername());
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        logger.info("'{}' login successfully.", loginInfo.getUsername());
+
+        return jwtService.generateToken(userDetails);
     }
 
     public void setUserRole(String roleType, Role role){
         switch (roleType){
-            case "ADMIN":
-                role.setRole(RoleEnum.ADMIN);
-                break;
-            case "USER":
-                role.setRole(RoleEnum.USER);
-                break;
+                case "ADMIN":
+                    role.setRole(RoleEnum.ADMIN);
+                    break;
+                case "USER":
+                    role.setRole(RoleEnum.USER);
+                    break;
             default:
                 role.setRole(RoleEnum.AUTHOR);
         }
+    }
+
+    public Page<User> getAllUsers(int offset, int pageSize, String field) {
+
+        return userRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.by(field))) ;
     }
 }

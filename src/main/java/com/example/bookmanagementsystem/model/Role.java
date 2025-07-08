@@ -16,8 +16,6 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "The role can not be empty.")
-    @Pattern(regexp = "ADMIN|USER|AUTHOR")
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(20) not null")
     private RoleEnum role;

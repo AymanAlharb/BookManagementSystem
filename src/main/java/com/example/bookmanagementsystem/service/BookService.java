@@ -1,11 +1,16 @@
 package com.example.bookmanagementsystem.service;
 
 import com.example.bookmanagementsystem.exception.ApiException;
+import com.example.bookmanagementsystem.model.RoleEnum;
 import com.example.bookmanagementsystem.model.dto.CreatingBookRequest;
 import com.example.bookmanagementsystem.model.Book;
 import com.example.bookmanagementsystem.model.User;
 import com.example.bookmanagementsystem.repository.BookRepository;
+import com.example.bookmanagementsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +23,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
+    private final UserRepository userRepository;
+
     private static final Logger logger = LogManager.getLogger(BookService.class);
 
     // Return all the books in the system.
@@ -25,12 +32,9 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public void addBook(User user, CreatingBookRequest bookDto) {
-        // Check the role of the user since only authors and admins can add books.
-        if (!((user.getRole().getRole().equals("AUTHOR")) || user.getRole().getRole().equals("ADMIN"))){
-            logger.warn("Unauthorized book addition attempt by user [{}] with role [{}]", user.getUsername(), user.getRole().getRole());
-            throw new ApiException("Only Admins And Authors can add books");
-        }
+    public void addBook(CreatingBookRequest bookDto) {
+        // Get the user
+        User user = getUser();
 
         // Create the book and sava it in the database.
         Book book = new Book(null, bookDto.getTitle(), bookDto.getAuthorName(), bookDto.getDescription(), user);
@@ -38,12 +42,20 @@ public class BookService {
         logger.info("Book '{}' added successfully by user [{}]", book.getTitle(), user.getUsername());
     }
 
-    public void updateBook(User user, Long bookId, CreatingBookRequest bookDto) {
+    public void updateBook(Long bookId, CreatingBookRequest bookDto) {
         // Get the book and check if it's in the database.
         Book book = bookRepository.findBookById(bookId);
+        if(book == null)
+            throw new ApiException("The requested book was not found in the database.");
 
-        // Validate the user or throw.
-        validateUser(user, book, "update");
+
+        // Get the user
+        User user = getUser();
+
+        // If the user is an author check if the book belongs to the user
+        if(user.getRole().getRole() == RoleEnum.AUTHOR)
+            if(book.getCreatedBy() != user)
+                throw new ApiException("You are not authorized to update this book. Authors can only update their own books.");
 
         // Update the book and save it in the database.
         book.setAuthorName(bookDto.getAuthorName());
@@ -54,32 +66,42 @@ public class BookService {
 
     }
 
-    public void deleteBook(User user, Long bookId) {
+    public void deleteBook(Long bookId) {
         // Get the book and check if it's in the database.
         Book book = bookRepository.findBookById(bookId);
+        if(book == null)
+            throw new ApiException("The requested book was not found in the database.");
 
-        // Validate the user or throw.
-        validateUser(user, book, "delete");
+        // Get the user
+        User user = getUser();
+
+        // If the user is an author check if the book belongs to the user
+        if(user.getRole().getRole() == RoleEnum.AUTHOR)
+            if(book.getCreatedBy() != user)
+                throw new ApiException("You are not authorized to delete this book. Authors can only delete their own books.");
 
         // delete the book from the database;
         bookRepository.delete(book);
         logger.info("Book '{}' deleted successfully by user [{}]", book.getTitle(), user.getUsername());
     }
 
-    // Validate the user or throw.
-    public void validateUser(User user, Book book, String operation) {
-        if (book == null)
-            throw new ApiException("The book not found in the database");
+    public List<Book> getBooksByAuthor(String authorName){
+        return bookRepository.getBooksByAuthor(authorName);
+    }
 
-        // Check if user is not an admin.
-        if (!user.getRole().getRole().equals("ADMIN")) {
+    public User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            // Check if the user is an author and the book belong to him/her.
-            if (!((user.getRole().getRole().equals("AUTHOR"))) ||
-                    !Objects.equals(book.getCreatedBy().getId(), user.getId())) {
-                logger.warn("Unauthorized book " + operation + " attempt by user [{}] with role [{}]", user.getUsername(), user.getRole().getRole());
-                throw new ApiException("The user can not " + operation + " this book.");
+        String username = null;
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else if (principal instanceof String) {
+                username = (String) principal;
             }
         }
+        return userRepository.findUserByUsername(username);
     }
 }

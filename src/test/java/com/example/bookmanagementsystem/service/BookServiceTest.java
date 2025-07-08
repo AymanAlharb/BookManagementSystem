@@ -1,5 +1,6 @@
 package com.example.bookmanagementsystem.service;
 
+import com.example.bookmanagementsystem.model.RoleEnum;
 import com.example.bookmanagementsystem.model.dto.CreatingBookRequest;
 import com.example.bookmanagementsystem.model.Book;
 import com.example.bookmanagementsystem.model.Role;
@@ -42,7 +43,7 @@ public class BookServiceTest {
 
     @BeforeEach
     void init(){
-        Role role = Role.builder().role("AUTHOR").build();
+        Role role = Role.builder().role(RoleEnum.AUTHOR).build();
         user = User.builder()
                 .username("ayman")
                 .email("ayman@gmail.com")
@@ -108,7 +109,8 @@ public class BookServiceTest {
 
     @Test
     public void BookService_AddBook_ReturnsBook(){
-        bookService.addBook(user, creatingBookRequest);
+        when(bookService.getUser()).thenReturn(user);
+        bookService.addBook(creatingBookRequest);
 
         verify(bookRepository, times(1)).save(book1);
         assertEquals(user, book1.getCreatedBy());
@@ -118,7 +120,8 @@ public class BookServiceTest {
     @Test
     public void BookService_UpdateBook_ChangedBookTitle(){
         when(bookRepository.findBookById(book1.getId())).thenReturn(book1);
-        bookService.updateBook(user, book1.getId(), creatingBookRequest2);
+        when(bookService.getUser()).thenReturn(user);
+        bookService.updateBook(book1.getId(), creatingBookRequest2);
 
         verify(bookRepository, times(2)).save(book1);
         assertEquals(book1.getTitle(), creatingBookRequest2.getTitle());
@@ -127,7 +130,8 @@ public class BookServiceTest {
     @Test
     public void BookService_DeleteBook_BookDeleted(){
         when(bookRepository.findBookById(book1.getId())).thenReturn(book1);
-        bookService.deleteBook(user, book1.getId());
+        when(bookService.getUser()).thenReturn(user);
+        bookService.deleteBook(book1.getId());
 
         verify(bookRepository, times(1)).delete(book1);
     }

@@ -1,6 +1,7 @@
 package com.example.bookmanagementsystem.repository;
 
 import com.example.bookmanagementsystem.model.Role;
+import com.example.bookmanagementsystem.model.RoleEnum;
 import com.example.bookmanagementsystem.model.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ public class UserRepositoryTest {
 
     @BeforeEach
     void init(){
-        Role role = Role.builder().role("AUTHOR").build();
+        Role role = Role.builder().role(RoleEnum.AUTHOR).build();
         user = User.builder()
                 .username("ayman")
                 .email("ayman@gmail.com")
