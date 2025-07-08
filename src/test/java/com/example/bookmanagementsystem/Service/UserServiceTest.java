@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +41,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void UserService_Signup_ReturnSuccess(){
+    public void UserService_Signup_ReturnSuccess() throws IOException {
         when(userRepository.findUserByEmail(user.getEmail())).thenReturn(null);
         when(userRepository.findUserByUsername(user.getUsername())).thenReturn(null);
 
