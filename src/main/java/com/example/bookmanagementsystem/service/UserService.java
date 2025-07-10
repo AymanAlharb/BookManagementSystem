@@ -76,7 +76,6 @@ public class UserService {
         }
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
         logger.info("'{}' login successfully.", loginInfo.getUsername());
 
         return jwtService.generateToken(userDetails);

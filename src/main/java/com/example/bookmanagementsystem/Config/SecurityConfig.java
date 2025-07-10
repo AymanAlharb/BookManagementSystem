@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -51,7 +52,9 @@ public class SecurityConfig {
                                 "/api/auth/signup",
                                 "/api/auth/login",
                                 "/api/book/get-/{authorName}/-books",
-                                "/v3/api-docs/**", "/v2/api-docs/**", "/v1/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                                "/v3/api-docs/**", "/v2/api-docs/**", "/v1/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/login**", "/oauth2/**",
+                                "http://localhost:63342/**")
                         .permitAll()
                         .requestMatchers("/api/book/add-book", "/api/book/delete-book/**", "/api/book/update-book/**")
                         .hasAnyAuthority("ADMIN", "AUTHOR")
@@ -63,6 +66,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(Customizer.withDefaults())
                 .build();
 
 
