@@ -1,17 +1,12 @@
 package com.example.bookmanagementsystem.controller;
 
-import com.example.bookmanagementsystem.exception.ApiException;
 import com.example.bookmanagementsystem.exception.ApiResponse;
 import com.example.bookmanagementsystem.model.User;
 import com.example.bookmanagementsystem.model.dto.LoginRequest;
 import com.example.bookmanagementsystem.model.dto.CreatingUserRequest;
-import com.example.bookmanagementsystem.model.dto.UserResponse;
-import com.example.bookmanagementsystem.service.EmailService;
 import com.example.bookmanagementsystem.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")

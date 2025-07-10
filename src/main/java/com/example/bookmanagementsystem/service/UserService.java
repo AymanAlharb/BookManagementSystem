@@ -2,7 +2,6 @@ package com.example.bookmanagementsystem.service;
 
 import com.example.bookmanagementsystem.exception.ApiException;
 import com.example.bookmanagementsystem.model.RoleEnum;
-import com.example.bookmanagementsystem.model.dto.UserResponse;
 import com.example.bookmanagementsystem.model.dto.LoginRequest;
 import com.example.bookmanagementsystem.model.dto.CreatingUserRequest;
 import com.example.bookmanagementsystem.model.Role;
@@ -22,8 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
