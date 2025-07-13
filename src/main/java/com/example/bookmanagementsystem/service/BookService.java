@@ -90,18 +90,23 @@ public class BookService {
     }
 
     public User getUser() {
+        // Get the authentication
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String username = null;
-        if (authentication != null && authentication.isAuthenticated()) {
-            Object principal = authentication.getPrincipal();
 
+        // Check if the authentication and the user is authenticated
+        if (authentication != null && authentication.isAuthenticated()) {
+
+            Object principal = authentication.getPrincipal();
+            // Get the user username
             if (principal instanceof UserDetails) {
                 username = ((UserDetails) principal).getUsername();
             } else if (principal instanceof String) {
                 username = (String) principal;
             }
         }
+        // Return
         return userRepository.findUserByUsername(username);
     }
 }

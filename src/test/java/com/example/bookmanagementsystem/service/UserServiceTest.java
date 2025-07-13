@@ -35,6 +35,7 @@ public class UserServiceTest {
                 .username("ayman")
                 .email("ayman@gmail.com")
                 .password("12345678aA")
+                .role("AUTHOR")
                 .build();
     }
 
