@@ -36,7 +36,7 @@ public class User implements UserDetails {
 
     @NotEmpty(message = "The description can not be empty.")
     @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{7,}$")
-    @Column(columnDefinition = "varchar(60) not null")
+    @Column(columnDefinition = "varchar(256) not null")
     private String password;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)

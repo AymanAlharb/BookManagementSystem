@@ -58,7 +58,7 @@ public class UserService {
         user.setRole(role);
         role.setUser(user);
         userRepository.save(user);
-        //emailService.sendEmail(user.getEmail(), user.getUsername());
+          emailService.sendEmail(user.getEmail(), user.getUsername());
         logger.info("New user with the username '{}' and the role '{}' signed up successfully.",
                 user.getUsername(), user.getRole().getRole());
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simple Login Page</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm" autocomplete="off">
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit" class="login-btn">Login</button>
+    </form>
+
+    <div class="oauth-buttons">
+        <button id="githubSignIn" class="github-btn" aria-label="Sign in with GitHub">
+            <!-- GitHub icon SVG -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.6-4.04-1.6a3.18 3.18 0 00-1.34-1.76c-1.1-.75.09-.73.09-.73a2.52 2.52 0 011.83 1.24 2.57 2.57 0 003.5 1 2.6 2.6 0 01.76-1.62c-2.67-.3-5.47-1.34-5.47-5.94a4.66 4.66 0 011.24-3.22 4.34 4.34 0 01.12-3.17s1-.32 3.3 1.23a11.36 11.36 0 016 0c2.28-1.55 3.29-1.23 3.29-1.23a4.32 4.32 0 01.13 3.17 4.64 4.64 0 011.23 3.22c0 4.62-2.81 5.64-5.48 5.94a2.9 2.9 0 01.83 2.25v3.34c0 .32.21.69.83.57A12 12 0 0012 0z"/></svg>
+            GitHub Sign-In
+        </button>
+
+        <button id="googleSignIn" class="google-btn" aria-label="Sign in with Google">
+            <!-- Google icon SVG -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.805 10.023h-9.39v3.935h5.546a4.736 4.736 0 01-2.046 3.11v2.576h3.306c1.935-1.786 3.045-4.406 3.045-7.622 0-.56-.057-1.103-.146-1.999z" fill="#4285F4"/><path d="M12.415 21.553c2.763 0 5.086-.91 6.782-2.48l-3.307-2.576c-.91.613-2.075.977-3.475.977-2.675 0-4.943-1.808-5.75-4.236H3.201v2.659a9.14 9.14 0 009.214 5.356z" fill="#34A853"/><path d="M6.663 13.238a5.484 5.484 0 010-3.473V7.106H3.201a9.325 9.325 0 000 9.785l3.462-3.653z" fill="#FBBC05"/><path d="M12.415 6.4a4.7 4.7 0 013.317 1.289l2.482-2.482a8.573 8.573 0 00-5.8-2.278 9.14 9.14 0 00-9.213 9.135v2.659h3.462a5.534 5.534 0 015.54-8.323z" fill="#EA4335"/></svg>
+            Google Sign-In
+        </button>
+    </div>
+
+    <div class="signup-text">
+        Don't have an account? <a href="#" id="signUpLink">Sign up</a>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

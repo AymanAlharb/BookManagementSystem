@@ -53,7 +53,7 @@ public class SecurityConfig {
                                 "/api/book/get-/{authorName}/-books",
                                 "/v3/api-docs/**", "/v2/api-docs/**", "/v1/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
                                 "/login**", "/oauth2/**",
-                                "http://localhost:63342/**")
+                                "/http://localhost:63342/**")
                         .permitAll()
                         .requestMatchers("/api/book/add-book", "/api/book/delete-book/**", "/api/book/update-book/**")
                         .hasAnyAuthority("ADMIN", "AUTHOR")
